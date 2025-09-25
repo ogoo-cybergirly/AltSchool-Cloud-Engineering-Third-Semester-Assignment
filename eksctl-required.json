@@ -1,0 +1,31 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "eks:DescribeCluster",
+        "eks:DescribeClusterVersions",
+        "eks:ListClusters",
+        "eks:ListUpdates",
+        "eks:DescribeUpdate",
+        "eks:DescribeNodegroup",
+        "eks:ListNodegroups",
+        "eks:TagResource",
+        "iam:CreateOpenIDConnectProvider",
+        "iam:GetOpenIDConnectProvider",
+        "iam:ListOpenIDConnectProviders",
+        "iam:PassRole",
+        "iam:AttachRolePolicy",
+        "iam:CreateRole",
+        "iam:PutRolePolicy",
+        "iam:GetRole",
+        "iam:ListRoles",
+        "iam:ListAttachedRolePolicies",
+        "iam:TagRole",
+        "iam:UpdateAssumeRolePolicy"
+      ],
+      "Resource": "*"
+    }
+  ]
+}

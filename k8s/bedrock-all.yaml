@@ -1,0 +1,251 @@
+# bedrock-all.yaml
+
+# MySQL
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bedrock-mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bedrock-mysql
+  template:
+    metadata:
+      labels:
+        app: bedrock-mysql
+    spec:
+      containers:
+      - name: mysql
+        image: mysql:8.0
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: rootpassword
+        ports:
+        - containerPort: 3306
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bedrock-mysql
+spec:
+  type: ClusterIP
+  selector:
+    app: bedrock-mysql
+  ports:
+  - protocol: TCP
+    port: 3306
+    targetPort: 3306
+
+# PostgreSQL
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bedrock-postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bedrock-postgres
+  template:
+    metadata:
+      labels:
+        app: bedrock-postgres
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:15
+        env:
+        - name: POSTGRES_PASSWORD
+          value: rootpassword
+        ports:
+        - containerPort: 5432
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bedrock-postgres
+spec:
+  type: ClusterIP
+  selector:
+    app: bedrock-postgres
+  ports:
+  - protocol: TCP
+    port: 5432
+    targetPort: 5432
+
+# DynamoDB Local
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bedrock-dynamodb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bedrock-dynamodb
+  template:
+    metadata:
+      labels:
+        app: bedrock-dynamodb
+    spec:
+      containers:
+      - name: dynamodb
+        image: amazon/dynamodb-local
+        ports:
+        - containerPort: 8000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bedrock-dynamodb
+spec:
+  type: ClusterIP
+  selector:
+    app: bedrock-dynamodb
+  ports:
+  - protocol: TCP
+    port: 8000
+    targetPort: 8000
+
+# Redis
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bedrock-redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bedrock-redis
+  template:
+    metadata:
+      labels:
+        app: bedrock-redis
+    spec:
+      containers:
+      - name: redis
+        image: redis:7
+        ports:
+        - containerPort: 6379
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bedrock-redis
+spec:
+  type: ClusterIP
+  selector:
+    app: bedrock-redis
+  ports:
+  - protocol: TCP
+    port: 6379
+    targetPort: 6379
+
+# Orders
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bedrock-orders
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bedrock-orders
+  template:
+    metadata:
+      labels:
+        app: bedrock-orders
+    spec:
+      containers:
+      - name: orders
+        image: public.ecr.aws/aws-containers/retail-orders:latest
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bedrock-orders
+spec:
+  type: ClusterIP
+  selector:
+    app: bedrock-orders
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+
+# Carts
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bedrock-carts
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bedrock-carts
+  template:
+    metadata:
+      labels:
+        app: bedrock-carts
+    spec:
+      containers:
+      - name: carts
+        image: public.ecr.aws/aws-containers/retail-carts:latest
+        ports:
+        - containerPort: 8081
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bedrock-carts
+spec:
+  type: ClusterIP
+  selector:
+    app: bedrock-carts
+  ports:
+  - protocol: TCP
+    port: 8081
+    targetPort: 8081
+
+# UI
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bedrock-ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bedrock-ui
+  template:
+    metadata:
+      labels:
+        app: bedrock-ui
+    spec:
+      containers:
+      - name: ui
+        image:  public.ecr.aws/aws-containers/retail-ui:latest
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bedrock-ui
+spec:
+  type: LoadBalancer
+  selector:
+    app: bedrock-ui
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80

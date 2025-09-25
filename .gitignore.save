@@ -1,0 +1,5 @@
+.terraform/
+ HEAD
+*.tfstate*
+
+ 61b4454 (Ignore Terraform provider binaries)

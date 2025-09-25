@@ -1,0 +1,10 @@
+This project implements a sample retail store application using Kubernetes on AWS EKS. It demonstrates infrastructure-as-code (IaC), cloud-native deployment practices, and security best practices. 
+The application includes multiple microservices, such as: UI Service (bedrock-ui), Orders (bedrock-orders), Carts (bedrock-carts), Catalog (bedrock-catalog), Databases (bedrock-mysql, bedrock-postgres, bedrock-redis, bedrock-dynamodb).
+The application is deployed using Kubernetes manifests, Terraform, and optionally, CI/CD pipelines for automated deployment. The architectural components include EKS Cluster for hosting all Kubernetes workloads, configured with AWS Load Balancer Controller for ALB-based ingress. 
+All services are deployed as ClusterIP services, except for UI, which is exposed through an Application Load Balancer (ALB). An AWS Certificate Manager (ACM) handles SSL/TLS for HTTPS connections, tho a unique DNS was not provisioned. 
+CI/CD Pipeline is used to automate build and deployment via GitHub Actions. Infrastructure and Kubernetes manifests were validated before deployment.
+
+The UI service is exposed via a Kubernetes Ingress using ALB. The hostname was not provisioned automatically; a user with full IAM permissions was required to complete this step.
+The IAM user provided is Bedrock-project-dev
+Some CI/CD steps failed due to read-only IAM permissions assigned to the provided developer user. Steps that required creating or tagging AWS resources (EKS, IAM roles, ALB) could not be executed with this IAM role after annotating the IAM role. 
+These failures did not impact the correctness of the IaC, manifests, or deployment configuration. 
